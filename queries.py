@@ -146,6 +146,18 @@ FROM (
 ) AS subquery
 '''
 
+TOTAL_COUNT = '''
+SELECT COUNT(*) AS num_rows
+FROM review
+'''
+
+NUM_100_OR_MORE = '''
+SELECT COUNT(*) as num_100_or_more
+FROM review AS r
+WHERE r.Nature <= 100 
+AND r.Shopping <= 100
+'''
+
 
 def select_name_by_id(id):
     return (
