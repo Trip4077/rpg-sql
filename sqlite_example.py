@@ -16,5 +16,3 @@ if __name__ == "__main__":
     connection = connect_to_db()
 
     results = execute_query(connection, q.AVG_CHARACTER_WEAPONS)
-
-    print(results)

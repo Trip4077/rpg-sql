@@ -156,12 +156,12 @@ FROM review
 NUM_100_OR_MORE = '''
 SELECT COUNT(*) as num_100_or_more
 FROM review AS r
-WHERE r.Nature <= 100 
+WHERE r.Nature <= 100
 AND r.Shopping <= 100
 '''
 
 CREATE_TEST_TABLE = '''
-CREATE TABLE IF NOT EXISTS test_table 
+CREATE TABLE IF NOT EXISTS test_table
 (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "name" VARCHAR(200) NOT NULL,
@@ -215,8 +215,7 @@ INSERT INTO character
   "dexterity",
   "wisdom"
 )
-VALUES 
-(
+VALUES (
   'Bernard',
   10,
   1000,
@@ -230,6 +229,32 @@ VALUES
 
 DROP_CHARACTER_TABLE = '''
 DROP TABLE IF EXISTS character
+'''
+
+CREATE_TITANIC_TABLE = '''
+CREATE TABLE IF NOT EXISTS titanic
+(
+  "PassengerId" SERIAL NOT NULL PRIMARY KEY,
+  "Survived" INT NOT NULL,
+  "Pclass" INT NOT NULL,
+  "Name" VARCHAR(250) NOT NULL,
+  "Sex" VARCHAR(30) NOT NULL,
+  "Age" INT,
+  "SibSp" INT NOT NULL,
+  "Parch" INT NOT NULL,
+  "Ticket" VARCHAR(120) NOT NULL,
+  "Fare" FLOAT NOT NULL,
+  "Cabin" VARCHAR(40),
+  "Embarked" VARCHAR(40)
+);
+'''
+
+DROP_TITANIC_TABLE = '''
+DROP TABLE IF EXISTS titanic
+'''
+
+SELECT_ALL_TITANIC_DATA = '''
+SELECT * FROM titanic
 '''
 
 
@@ -269,3 +294,48 @@ def insert_new_character(
             {wisdom}
         )
     '''
+
+
+def insert_titanic_passenger(
+        survived, pclass, name, sex, age, sibsp,
+        parch, ticket, fare, cabin, embarked
+):
+    if cabin is None:
+        cabin = 'N/A'
+
+    if age is None:
+        age = -1
+
+    query = f'''
+    INSERT INTO titanic
+    (
+        "Survived",
+        "Pclass",
+        "Name",
+        "Sex",
+        "Age",
+        "SibSp",
+        "Parch",
+        "Ticket",
+        "Fare",
+        "Cabin",
+        "Embarked"
+    )
+    VALUES
+    (
+        {survived},
+        {pclass},
+        '{name.replace("'", "-")}',
+        '{sex}',
+        {age},
+        {sibsp},
+        {parch},
+        '{ticket}',
+        {fare},
+        '{cabin}',
+        '{embarked}'
+    )
+    '''
+
+    print(query)
+    return query

@@ -1,6 +1,5 @@
-import psycopg2
-
 from sqlite_example import connect_to_db, execute_query
+from pg_helper import connect_to_pg, modify_pg
 from queries import (
     SELECT_CHARACTERS,
     DROP_CHARACTER_TABLE,
@@ -14,30 +13,13 @@ HOST_NAME = 'jelani.db.elephantsql.com'
 PASSWORD = 'zVgeJ4rSgilcPjpAxbvTu_fZWfGglK8H'
 
 
-def connect_to_pg(
-    dbname=DB_NAME, user=USER_NAME, password=PASSWORD, host=HOST_NAME
-):
-    pg_conn = psycopg2.connect(
-        dbname=DB_NAME, user=USER_NAME, password=PASSWORD, host=HOST_NAME
-    )
-
-    pg_cursor = pg_conn.cursor()
-
-    return pg_conn, pg_cursor
-
-
-def modify_pg(conn, cursor, query):
-    cursor.execute(query)
-    conn.commit()
-
-
 if __name__ == '__main__':
     # Get SQLite3 data and connection
     sqlite_conn = connect_to_db()
     sqlite_characters = execute_query(sqlite_conn, SELECT_CHARACTERS)
 
     # Connect to PostgreSQL database and create fresh table
-    pg_conn, pg_cursor = connect_to_pg()
+    pg_conn, pg_cursor = connect_to_pg(DB_NAME, USER_NAME, PASSWORD, HOST_NAME)
 
     modify_pg(pg_conn, pg_cursor, DROP_CHARACTER_TABLE)
     modify_pg(pg_conn, pg_cursor, CREATE_CHARACTER_TABLE)
