@@ -1,4 +1,6 @@
-SELECT_CHARACTER_ID_AND_NAME = (
+SELECT_CHARACTERS = 'SELECT * FROM charactercreator_character'
+
+SELECT_CHARACTERS_ID_AND_NAME = (
     'SELECT character_id, name '
     'FROM charactercreator_character;'
 )
@@ -47,7 +49,6 @@ SELECT_NAME_COUNT_2 = (
     'ORDER BY name DESC;'
 )
 
-
 SELECT_STRENGTH_WITH_PET = (
     'SELECT strength, has_pet '
     'FROM charactercreator_character AS ccc '
@@ -69,6 +70,7 @@ TOTAL_CHARACTERS = '''
 SELECT COUNT(*) AS character_count
 FROM charactercreator_character;
 '''
+
 TOTAL_SUBCLASS = '''
 SELECT COUNT(*) AS necromancer_count
 FROM charactercreator_necromancer;
@@ -158,6 +160,78 @@ WHERE r.Nature <= 100
 AND r.Shopping <= 100
 '''
 
+CREATE_TEST_TABLE = '''
+CREATE TABLE IF NOT EXISTS test_table 
+(
+  "id" SERIAL NOT NULL PRIMARY KEY,
+  "name" VARCHAR(200) NOT NULL,
+  "age" INT NOT NULL,
+  "country_of_origin" VARCHAR(200) NOT NULL
+);
+'''
+
+INSERT_TEST_TABLE = '''
+INSERT INTO test_table
+(
+  "name",
+  "age",
+  "country_of_origin"
+)
+VALUES (
+  'Bernard Johnson',
+  30,
+  'US'
+)
+'''
+
+DROP_TEST_TABLE = '''
+DROP TABLE IF EXISTS test_table
+'''
+
+CREATE_CHARACTER_TABLE = '''
+CREATE TABLE IF NOT EXISTS character
+(
+  "character_id" SERIAL NOT NULL PRIMARY KEY,
+  "name" VARCHAR(30),
+  "level" INT NOT NULL,
+  "exp" INT NOT NULL,
+  "hp" INT NOT NULL,
+  "strength" INT NOT NULL,
+  "intelligence" INT NOT NULL,
+  "dexterity" INT NOT NULL,
+  "wisdom" INT NOT NULL
+);
+'''
+
+INSERT_BERNARD = '''
+INSERT INTO character
+(
+  "name",
+  "level",
+  "exp",
+  "hp",
+  "strength",
+  "intelligence",
+  "dexterity",
+  "wisdom"
+)
+VALUES 
+(
+  'Bernard',
+  10,
+  1000,
+  200,
+  10,
+  15,
+  12,
+  13
+)
+'''
+
+DROP_CHARACTER_TABLE = '''
+DROP TABLE IF EXISTS character
+'''
+
 
 def select_name_by_id(id):
     return (
@@ -165,3 +239,33 @@ def select_name_by_id(id):
         'FROM charactercreator_character '
         f"WHERE character_id = {id};"
     )
+
+
+def insert_new_character(
+    name, level, exp, hp,
+    strength, intelligence, dexterity, wisdom
+):
+    return f'''
+        INSERT INTO character
+        (
+            "name",
+            "level",
+            "exp",
+            "hp",
+            "strength",
+            "intelligence",
+            "dexterity",
+            "wisdom"
+        )
+        VALUES
+        (
+            '{name}',
+            {level},
+            {exp},
+            {hp},
+            {strength},
+            {intelligence},
+            {dexterity},
+            {wisdom}
+        )
+    '''
