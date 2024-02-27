@@ -14,3 +14,11 @@ def connect_to_pg(dbname, user, password, host):
 def modify_pg(conn, cursor, query):
     cursor.execute(query)
     conn.commit()
+
+
+def fetch_data(cursor, query):
+    cursor.execute(query)
+
+    result = cursor.fetchall()
+
+    return result
