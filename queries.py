@@ -257,6 +257,19 @@ SELECT_ALL_TITANIC_DATA = '''
 SELECT * FROM titanic
 '''
 
+SELECT_ALL_CHARACTERS_AND_INVENTORY = '''
+SELECT * 
+FROM charactercreator_character AS ccc
+INNER JOIN charactercreator_character_inventory AS cci
+ON ccc.character_id = cci.character_id
+INNER JOIN armory_item AS ai
+ON cci.item_id = ai.item_id
+'''
+
+SELECT_ARMORY_WEAPONS = '''
+SELECT item_ptr_id FROM armory_weapon
+'''
+
 
 def select_name_by_id(id):
     return (
